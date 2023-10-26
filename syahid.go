@@ -26,7 +26,7 @@ func GCFPostCoordinate(Mongostring, dbname, colname string, r *http.Request) str
 		req.Message = "error parsing application/json: " + err.Error()
 	} else {
 		req.Status = strconv.Itoa(http.StatusOK)
-		Ins := InsertDataLonlat(conn, colname,
+		Ins := InsertDataGeojson(conn, colname,
 			resp.Coordinates,
 			resp.Name,
 			resp.Volume,
