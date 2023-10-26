@@ -1,9 +1,9 @@
-module github.com.MSyahidAlFajri/backendgis
+module github.com/MSyahidAlFajri/backendgcp
 
 go 1.21.3
 
 require (
-	github.com/aiteung/atdb v0.0.14
+	github.com/aiteung/atdb v0.1.1
 	go.mongodb.org/mongo-driver v1.12.1
 )
 
