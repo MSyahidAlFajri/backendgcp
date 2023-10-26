@@ -1,4 +1,4 @@
-package backendgis
+package backendgcp
 
 type GeometryPolygon struct {
 	Coordinates [][][]float64 `json:"coordinates" bson:"coordinates"`

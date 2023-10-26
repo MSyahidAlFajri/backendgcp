@@ -1,4 +1,4 @@
-package backendgis
+package backendgcp
 
 import (
 	"encoding/json"
