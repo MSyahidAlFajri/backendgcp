@@ -20,7 +20,7 @@ func GetAllData(MongoConnect *mongo.Database, colname string) []GeoJson {
 	return data
 }
 
-func InsertDataLonlat(MongoConn *mongo.Database, colname string, coordinate []float64, name, volume, tipe string) (InsertedID interface{}) {
+func InsertDataGeojson(MongoConn *mongo.Database, colname string, coordinate []float64, name, volume, tipe string) (InsertedID interface{}) {
 	req := new(LonLatProperties)
 	req.Type = tipe
 	req.Coordinates = coordinate
