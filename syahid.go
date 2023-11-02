@@ -55,7 +55,7 @@ func GCFUpdateNameGeojson(Mongostring, dbname, colname string, r *http.Request) 
 			resp.Name,
 			resp.Volume,
 			resp.Type)
-		req.Message = fmt.Sprintf("%v:%v", "Berhasil Input data", Ins)
+		req.Message = fmt.Sprintf("%v:%v", "Berhasil Update data", Ins)
 	}
 	return ReturnStringStruct(req)
 }
