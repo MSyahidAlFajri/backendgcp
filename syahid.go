@@ -40,3 +40,43 @@ func ReturnStringStruct(Data any) string {
 	jsonee, _ := json.Marshal(Data)
 	return string(jsonee)
 }
+
+func GCFUpdateNameGeojson(Mongostring, dbname string, r *http.Request) string {
+	req := new(Credents)
+	resp := new(LonLatProperties)
+	err := json.NewDecoder(r.Body).Decode(&resp)
+	if err != nil {
+		req.Status = strconv.Itoa(http.StatusNotFound)
+		req.Message = "error parsing application/json: " + err.Error()
+	} else {
+		req.Status = strconv.Itoa(http.StatusOK)
+		Ins := UpdateNameGeojson(conn, colname,
+			resp.Coordinates,
+			resp.Name,
+			resp.Volume,
+			resp.Type)
+		req.Message = fmt.Sprintf("%v:%v", "Berhasil Update Data Geo", Ins)
+	}
+	return ReturnStringStruct(req)
+}
+
+func GCFDeleteDataGeojson(Mongostring, dbname string, r *http.Request) string {
+	req := new(Credents)
+	resp := new(LonLatProperties)
+	err := json.NewDecoder(r.Body).Decode(&resp)
+	if err != nil {
+				req.Status = strconv.Itoa(http.StatusNotFound)
+				req.Message = "error parsing application/json: " + err.Error()
+			} else {
+				req.Status = strconv.Itoa(http.StatusOK)
+				Ins := DeleteDataGeojson(Mongostring, dbname, context.Background(),
+					LonLatProperties{
+						Type:   resp.Type,
+						Name:   resp.Name,
+						Volume: resp.Volume,
+					})
+				req.Message = fmt.Sprintf("%v:%v", "Berhasil Hapus Data Geo", Ins)
+			}
+
+	return ReturnStringStruct(req)
+}
