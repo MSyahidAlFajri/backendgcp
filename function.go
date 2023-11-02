@@ -24,7 +24,7 @@ func UpdateNameGeojson(Mongoenv, dbname string, ctx context.Context, val LonLatP
 	update := bson.D{{"$set", bson.D{
 		{"name", val.Name},
 	}}}
-	res, err := conn.Collection("lonlatpost").UpdateOne(ctx, filter, update)
+	res, err := conn.Collection("post").UpdateOne(ctx, filter, update)
 	if err != nil {
 		return "Updatenya Gagal Nich"
 	}
@@ -34,7 +34,7 @@ func UpdateNameGeojson(Mongoenv, dbname string, ctx context.Context, val LonLatP
 func DeleteDataGeojson(Mongoenv, dbname string, ctx context.Context, val LonLatProperties) (DeletedId interface{}) {
 	conn := GetConnectionMongo(Mongoenv, dbname)
 	filter := bson.D{{"volume", val.Volume}}
-	res, err := conn.Collection("lonlatpost").DeleteOne(ctx, filter)
+	res, err := conn.Collection("post").DeleteOne(ctx, filter)
 	if err != nil {
 		return "Deletenya Gagal Nich"
 	}
