@@ -24,7 +24,7 @@ func GetAllData(MongoConnect *mongo.Database, colname string) []GeoJson {
 	return data
 }
 
-func InsertDataGeojson(MongoConn *mongo.Database, colname string, coordinate []float64, name, volume, tipe string) (InsertedID interface{}) {
+func InsertDataGeojson(MongoConn *mongo.Database, colname string, coordinate [][]float64, name, volume, tipe string) (InsertedID interface{}) {
 	req := new(LonLatProperties)
 	req.Type = tipe
 	req.Coordinates = coordinate
@@ -72,4 +72,25 @@ func IsExist(Tokenstr, PublicKey string) bool {
 		return false
 	}
 	return true
+}
+
+func GetCoordinateNear(MongoConn *mongo.Database, colname string, coordinate []float64) (result []GeoJson, err error) {
+	filter := bson.M{"geometry.coordinates": bson.M{
+		"$near": bson.M{
+			"$geometry": bson.M{
+				"type":        "LineString",
+				"coordinates": coordinate,
+			},
+		},
+	}}
+	curr, err := MongoConn.Collection(colname).Find(context.Background(), filter)
+	if err != nil {
+		return nil, err
+	}
+	defer curr.Close(context.Background())
+	err = curr.All(context.Background(), &result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
