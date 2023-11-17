@@ -5,6 +5,7 @@ import (
 	"github.com/aiteung/atdb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+    "github.com/whatsauth/watoken"   
 	"os"
 
 )
@@ -55,11 +56,20 @@ func UpdateDataGeojson(MongoConn *mongo.Database, colname, name, newVolume, newT
     return nil
 }
 
-func DeleteDataGeojson(MongoConn *mongo.Database, colname string, name string) (*mongo.DeleteResult, error) {
-    filter := bson.M{"name": name}
-    del, err := MongoConn.Collection(colname).DeleteOne(context.TODO(), filter)
-    if err != nil {
-        return nil, err
-    }
-    return del, nil
+func DeleteDataGeojson(Mongoenv, dbname string, ctx context.Context, val LonLatProperties) (DeletedId interface{}) {
+	conn := GetConnectionMongo(Mongoenv, dbname)
+	filter := bson.D{{"volume", val.Volume}}
+	res, err := conn.Collection("lonlatpost").DeleteOne(ctx, filter)
+	if err != nil {
+		return "Gagal Delete"
+	}
+	return res
+}
+
+func IsExist(Tokenstr, PublicKey string) bool {
+	id := watoken.DecodeGetId(PublicKey, Tokenstr)
+	if id == "" {
+		return false
+	}
+	return true
 }
